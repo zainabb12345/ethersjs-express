@@ -38,7 +38,7 @@ exports.transfer = async ()=> {
         let result = await signer.sendTransaction(transaction);
 
         // The second parameter passed means number of confirmations to wait.
-        // await provider.waitForTransaction(result.hash,2);
+        await provider.waitForTransaction(result.hash);
 
         return result.hash;
 
@@ -71,10 +71,11 @@ exports.transferToken = async (targetAddress,amount) => {
         };
 
         // Send the transaction
-        let result = await wallet.sendTransaction(transaction);
+        let signer = provider.getSigner();
+        let result = await signer.sendTransaction(transaction);
 
         // The second parameter passed means number of confirmations to wait.
-        // await web3Provider.waitForTransaction(result.hash,2); 
+        await provider.waitForTransaction(result.hash);
 
         return result.hash;
 
@@ -86,7 +87,7 @@ exports.transferToken = async (targetAddress,amount) => {
 // function for retrieving current Nonce.
 exports.getNonceByEthAddress = async () => {
     try {
-        let nonce = await wallet.getTransactionCount();
+        let nonce = await wallet.getTransactionCount("pending");
         return (nonce);
     } catch (error) {
         console.log(error);
